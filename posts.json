@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "slug": "mypc",
+    "title": "My PC Setup",
+    "date": "2026-07-08",
+    "file": "posts/mypc/index.md"
+  }
+]
