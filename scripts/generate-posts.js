@@ -24,7 +24,7 @@ for (const folder of fs.readdirSync(postsDir)) {
         slug: folder,
         title,
         date,
-        url: `posts/${folder}/`
+        file: `posts/${folder}/index.md`
     });
 }
 

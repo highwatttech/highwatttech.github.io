@@ -23,12 +23,33 @@
         <div class="nav-links">
             <a href="index.html" class="active">Home</a>
             <a href="blog.html">Blog</a>
+            <a href="now.html">Now</a>
         </div>
     </nav>
 
     <main class="hero">
         <h1 class="pixelify blur">highwatt</h1>
+        <p class="about-line">Tinkering with a Ryzen 5600X and a 2060, mostly writing about whatever breaks on this site.</p>
     </main>
 
-</body>
-</html>
+    <footer class="site-footer">
+        <span>&copy; <span id="year"></span> highwatt</span>
+        <a href="https://github.com/highwatttech" target="_blank" rel="noopener">GitHub</a>
+        <span id="last-updated"></span>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        fetch("https://api.github.com/repos/highwatttech/highwatttech.github.io/commits/main")
+            .then(res => res.json())
+            .then(data => {
+                if (!data.commit) return;
+                const date = new Date(data.commit.committer.date);
+                document.getElementById("last-updated").textContent =
+                    "· last updated " + date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+            })
+            .catch(() => {});
+    </script>
+
+</body
