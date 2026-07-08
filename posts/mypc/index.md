@@ -1,3 +1,8 @@
+---
+title: "My PC Setup"
+date: "2026-07-08"
+---
+
 My current desktop setup.
 
 ---
