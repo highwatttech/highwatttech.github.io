@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>highwatt - Blog</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="assets/images/icon.png">
+
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="nav-left">
+        <img src="assets/images/burger.png" class="burger">
+        <img src="assets/images/logo.png" class="logo">
+    </div>
+
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="blog.html" class="active">Blog</a>
+    </div>
+
+</nav>
+
+
+
+<main class="blog">
+
+    <div id="post-list"></div>
+
+    <article id="post-content" class="markdown"></article>
+
+</main>
+
+
+
+<script>
+
+let posts = [];
+
+
+fetch("posts.json")
+.then(res => res.json())
+.then(data => {
+
+    posts = data;
+
+    loadPage();
+
+});
+
+
+
+function loadPage(){
+
+    const slug = location.hash.substring(1);
+
+    const list = document.getElementById("post-list");
+    const content = document.getElementById("post-content");
+
+
+    if(!slug){
+
+        content.innerHTML = "";
+
+        list.innerHTML = `
+
+            <h1 class="page-title">
+                Blog
+            </h1>
+
+
+            <div class="posts">
+
+            ${posts.map(post => `
+
+                <a class="post" href="#${post.slug}">
+
+                    <h2>
+                        ${post.title}
+                    </h2>
+
+                    <p>
+                        ${post.date}
+                    </p>
+
+                </a>
+
+            `).join("")}
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+
+    const post = posts.find(p => p.slug === slug);
+
+
+
+    if(!post){
+
+        list.innerHTML = "";
+
+        content.innerHTML = `
+            <a class="back" href="#">
+                ← Back
+            </a>
+
+            <h1>
+                Post not found
+            </h1>
+        `;
+
+        return;
+
+    }
+
+
+
+    list.innerHTML = "";
+
+
+    fetch(post.file)
+    .then(res => res.text())
+    .then(md => {
+
+
+        content.innerHTML = `
+
+            <a class="back" href="#">
+                ← Back to posts
+            </a>
+
+
+            <h1>
+                ${post.title}
+            </h1>
+
+
+            <p class="date">
+                ${post.date}
+            </p>
+
+
+            <hr>
+
+
+            ${marked.parse(md)}
+
+        `;
+
+
+    });
+
+
+}
+
+
+
+window.addEventListener(
+    "hashchange",
+    loadPage
+);
+
+
+</script>
+
+
+</body>
+</html>
